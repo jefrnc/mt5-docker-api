@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  mt5:
+    image: jsfrnc/mt5-docker-api:latest
+    container_name: mt5-docker-api
+    ports:
+      - "3000:3000"    # NoVNC web interface
+      - "8000:8000"    # REST API
+      - "8001:8001"    # MT5 Python API
+    volumes:
+      - mt5_config:/config
+    environment:
+      - CUSTOM_USER=trader
+      - PASSWORD=${MT5_PASSWORD:-changeme}
+      - MT5_PORT=8001
+      - VNC_PORT=3000
+      - LOG_LEVEL=INFO
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  mt5_config:
+    driver: local

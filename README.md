@@ -34,16 +34,15 @@ This Docker image allows you to run MetaTrader5 on any system that supports Dock
 mkdir mt5-docker && cd mt5-docker
 ```
 
-2. Download required files:
+2. Download the docker-compose.yml file:
 ```bash
-wget https://github.com/jefrnc/mt5-docker-api/docker/docker-compose.yml
-wget https://github.com/jefrnc/mt5-docker-api/.env.example
+wget https://raw.githubusercontent.com/jefrnc/mt5-docker-api/main/docker-compose.yml
 ```
 
-3. Configure environment:
+3. Configure environment (optional):
 ```bash
-cp .env.example .env
-nano .env  # Edit with your settings
+# Create a .env file with your custom password
+echo "MT5_PASSWORD=your_secure_password" > .env
 ```
 
 4. Start the container:
@@ -66,7 +65,7 @@ docker run -d \
   -v mt5_config:/config \
   -e CUSTOM_USER=trader \
   -e PASSWORD=your_secure_password \
-  metatrader5_vnc:latest
+  jsfrnc/mt5-docker-api:latest
 ```
 
 ## Configuration
@@ -175,12 +174,12 @@ Access MetaEditor through the MT5 interface for development.
 1. Clone the repository:
 ```bash
 git clone https://github.com/jefrnc/mt5-docker-api
-cd MetaTrader5-Docker-Image
+cd mt5-docker-api
 ```
 
 2. Build the image:
 ```bash
-docker build -f docker/Dockerfile -t metatrader5_vnc:latest .
+docker build -t jsfrnc/mt5-docker-api:latest .
 ```
 
 ## System Requirements
