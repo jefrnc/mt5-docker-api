@@ -9,7 +9,7 @@ httpx==0.28.*  # For FastAPI testing
 
 # Code quality
 black==25.1.*
-flake8==6.1.*
+flake8==7.3.*
 mypy==1.7.*
 pre-commit==3.5.*
 
