@@ -10,7 +10,7 @@ httpx==0.28.*  # For FastAPI testing
 # Code quality
 black==25.1.*
 flake8==6.1.*
-mypy==1.7.*
+mypy==1.17.*
 pre-commit==3.5.*
 
 # Type stubs
