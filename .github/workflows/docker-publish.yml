@@ -114,7 +114,7 @@ jobs:
           docker build -t local-scan:latest .
 
       - name: Run Trivy vulnerability scanner on local image
-        uses: aquasecurity/trivy-action@0.32.0
+        uses: aquasecurity/trivy-action@0.33.0
         with:
           image-ref: 'local-scan:latest'
           format: 'sarif'
