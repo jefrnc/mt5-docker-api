@@ -223,34 +223,5 @@ jobs:
           path: vulnerability-report.txt
           retention-days: 30
 
-  create-release:
-    needs: [build]
-    runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v')
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Create Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref_name }}
-          release_name: Release ${{ github.ref_name }}
-          body: |
-            ## Docker Image
-            
-            ```bash
-            docker pull ${{ env.DOCKER_HUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}
-            ```
-            
-            ## What's Changed
-            
-            See [full changelog](https://github.com/${{ github.repository }}/compare/previous...${{ github.ref_name }})
-            
-            ## Docker Hub
-            
-            View on Docker Hub: https://hub.docker.com/r/${{ env.DOCKER_HUB_USERNAME }}/${{ env.IMAGE_NAME }}
-          draft: false
-          prerelease: false
+  # Release creation is handled by auto-release.yml workflow
+  # This job has been removed to prevent duplicate release attempts
