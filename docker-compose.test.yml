@@ -2,23 +2,21 @@ version: '3.8'
 
 services:
   mt5-docker-api:
-    image: jsfrnc/mt5-docker-api:latest
-    # For local testing, uncomment the following line and comment the above
-    # image: mt5-docker-api:test
-    container_name: mt5-docker-api
+    image: mt5-docker-api:test
+    container_name: mt5-docker-api-test
     restart: unless-stopped
     ports:
       - "3000:3000"  # VNC Web Access
       - "8000:8000"  # REST API
       - "8001:8001"  # Python MT5 API
     volumes:
-      - mt5_data:/root/.wine/drive_c/Program Files/MetaTrader 5
+      - mt5_test_data:/root/.wine/drive_c/Program Files/MetaTrader 5
       - ./logs:/app/logs
     environment:
-      - MT5_LOGIN=${MT5_LOGIN}
-      - MT5_PASSWORD=${MT5_PASSWORD}
-      - MT5_SERVER=${MT5_SERVER}
-      - API_KEY=${API_KEY:-your-secure-api-key}
+      - MT5_LOGIN=${MT5_LOGIN:-demo}
+      - MT5_PASSWORD=${MT5_PASSWORD:-demo}
+      - MT5_SERVER=${MT5_SERVER:-MetaQuotes-Demo}
+      - API_KEY=${API_KEY:-test-api-key}
       - VNC_PASSWORD=${VNC_PASSWORD:-vnc123}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
@@ -27,12 +25,12 @@ services:
       retries: 3
       start_period: 60s
     networks:
-      - mt5-network
+      - mt5-test-network
 
 volumes:
-  mt5_data:
+  mt5_test_data:
     driver: local
 
 networks:
-  mt5-network:
+  mt5-test-network:
     driver: bridge
