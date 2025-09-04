@@ -8,9 +8,14 @@ on:
         required: true
         type: string
 
+permissions:
+  contents: write
+  
 jobs:
   create-release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -40,12 +45,11 @@ jobs:
           sleep 30
 
       - name: Create GitHub Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
           tag_name: v${{ inputs.version }}
-          release_name: v${{ inputs.version }}
+          name: v${{ inputs.version }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           body: |
             ## 🚀 Release v${{ inputs.version }}
             

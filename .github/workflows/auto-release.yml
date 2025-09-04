@@ -1,0 +1,61 @@
+name: Auto Release on Tag
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Release ${{ steps.get_version.outputs.VERSION }}
+          body: |
+            ## 🚀 Release ${{ steps.get_version.outputs.VERSION }}
+            
+            ### Docker Image
+            
+            Pull the latest version:
+            ```bash
+            docker pull jsfrnc/mt5-docker-api:${{ steps.get_version.outputs.VERSION }}
+            docker pull jsfrnc/mt5-docker-api:latest
+            ```
+            
+            ### Quick Start
+            
+            ```bash
+            mkdir mt5-docker && cd mt5-docker
+            wget https://raw.githubusercontent.com/jefrnc/mt5-docker-api/main/docker-compose.yml
+            wget https://raw.githubusercontent.com/jefrnc/mt5-docker-api/main/.env.example
+            cp .env.example .env
+            docker-compose up -d
+            ```
+            
+            ### Access Points
+            - Web VNC: http://localhost:3000
+            - REST API: http://localhost:8000/docs
+            - MT5 Python: localhost:8001
+            
+            ### Documentation
+            - [Full Documentation](https://github.com/jefrnc/mt5-docker-api#readme)
+            - [Docker Hub](https://hub.docker.com/r/jsfrnc/mt5-docker-api)
+            
+            ### What's Changed
+            See [full changelog](https://github.com/jefrnc/mt5-docker-api/compare/v1.0.1...v${{ steps.get_version.outputs.VERSION }})
+          draft: false
+          prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
