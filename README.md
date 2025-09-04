@@ -7,6 +7,16 @@
 
 A containerized solution for running MetaTrader5 trading platform with web-based VNC access and Python API support.
 
+## 🐳 Docker Hub
+
+The official image is available on Docker Hub:
+
+**Repository:** [jsfrnc/mt5-docker-api](https://hub.docker.com/r/jsfrnc/mt5-docker-api)
+
+```bash
+docker pull jsfrnc/mt5-docker-api:latest
+```
+
 ## Overview
 
 This Docker image allows you to run MetaTrader5 on any system that supports Docker, providing:
@@ -27,7 +37,30 @@ This Docker image allows you to run MetaTrader5 on any system that supports Dock
 
 ## Quick Start
 
-### Using Docker Compose (Recommended)
+### Option 1: Using Docker Hub Image (Easiest)
+
+Pull and run the latest image from Docker Hub:
+
+```bash
+# Pull the latest image
+docker pull jsfrnc/mt5-docker-api:latest
+
+# Run the container
+docker run -d \
+  --name mt5-docker \
+  -p 3000:3000 \
+  -p 8000:8000 \
+  -p 8001:8001 \
+  -e VNC_PASSWORD=yourpassword \
+  -v mt5_data:/root/.wine/drive_c/Program\ Files/MetaTrader\ 5 \
+  jsfrnc/mt5-docker-api:latest
+```
+
+Available tags:
+- `jsfrnc/mt5-docker-api:latest` - Latest stable version
+- `jsfrnc/mt5-docker-api:v1.0.2` - Specific version
+
+### Option 2: Using Docker Compose (Recommended for Production)
 
 1. Create a project directory:
 ```bash
@@ -51,6 +84,8 @@ nano .env  # Edit with your settings
 docker compose up -d
 ```
 
+The image `jsfrnc/mt5-docker-api:latest` will be automatically pulled from Docker Hub.
+
 5. Access MetaTrader5:
    - Open your browser and navigate to `http://localhost:3000`
    - Login with the credentials you set in `.env`
@@ -66,7 +101,7 @@ docker run -d \
   -v mt5_config:/config \
   -e CUSTOM_USER=trader \
   -e PASSWORD=your_secure_password \
-  metatrader5_vnc:latest
+  jsfrnc/mt5-docker-api:latest
 ```
 
 ## Configuration
