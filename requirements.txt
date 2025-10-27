@@ -6,7 +6,7 @@ requests==2.32.*
 urllib3==2.5.*
 
 # API dependencies
-fastapi==0.116.*
+fastapi==0.120.*
 uvicorn[standard]==0.35.*
 websockets==15.0.1
 
