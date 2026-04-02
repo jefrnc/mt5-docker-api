@@ -3,7 +3,7 @@
 [![Docker Build](https://github.com/jefrnc/mt5-docker-api/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/jefrnc/mt5-docker-api/actions/workflows/docker-publish.yml)
 [![Docker Pulls](https://img.shields.io/docker/pulls/jsfrnc/mt5-docker-api)](https://hub.docker.com/r/jsfrnc/mt5-docker-api)
 [![Docker Image Size](https://img.shields.io/docker/image-size/jsfrnc/mt5-docker-api)](https://hub.docker.com/r/jsfrnc/mt5-docker-api)
-[![License](https://img.shields.io/github/license/jefrnc/mt5-docker-api)](LICENSE.md)
+[![License](https://img.shields.io/github/license/jefrnc/mt5-docker-api)](LICENSE)
 
 A containerized solution for running MetaTrader5 trading platform with web-based VNC access and Python API support.
 
@@ -112,6 +112,9 @@ docker run -d \
 |----------|----------|---------|-------------|
 | `CUSTOM_USER` | Yes | - | VNC username |
 | `PASSWORD` | Yes | - | VNC password (min 8 chars) |
+| `VNC_PASSWORD` | Yes | - | VNC connection password (no default; must be set explicitly) |
+| `API_KEY` | No | - | API key for authenticating REST API requests via `X-API-Key` header. If not set, auth is disabled (for local dev) |
+| `ALLOWED_ORIGINS` | No | `http://localhost:8080` | Comma-separated list of allowed CORS origins |
 | `VNC_PORT` | No | 3000 | Web VNC interface port |
 | `API_PORT` | No | 8000 | REST API server port |
 | `MT5_PORT` | No | 8001 | Python MT5 server port |
@@ -135,8 +138,8 @@ The container includes a REST API with automatic documentation:
 #### Example API Calls:
 
 ```bash
-# Get account info
-curl http://localhost:8000/account
+# Get account info (include X-API-Key header if API_KEY is configured)
+curl -H "X-API-Key: YOUR_KEY" http://localhost:8000/account
 
 # Get available symbols
 curl http://localhost:8000/symbols
@@ -264,4 +267,4 @@ docker build -t mt5-docker-api:latest .
 
 ## License
 
-This project is licensed under the MIT License. See [LICENSE.md](LICENSE.md) for details.
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
