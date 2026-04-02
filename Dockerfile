@@ -47,11 +47,7 @@ RUN winecfg || true
 # Expose ports
 EXPOSE 5900 6080 8000
 
-# Create startup script
-RUN echo '#!/bin/bash\n\
-Xvfb :1 -screen 0 1024x768x16 &\n\
-x11vnc -display :1 -nopw -forever &\n\
-websockify --web=/usr/share/novnc/ 6080 localhost:5900 &\n\
-python app.py\n' > /app/start.sh && chmod +x /app/start.sh
+# Make entrypoint script executable
+RUN chmod +x /app/scripts/entrypoint.sh
 
-CMD ["/app/start.sh"]
+CMD ["/app/scripts/entrypoint.sh"]

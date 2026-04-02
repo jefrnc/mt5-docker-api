@@ -88,7 +88,7 @@ The image `jsfrnc/mt5-docker-api:latest` will be automatically pulled from Docke
 
 5. Access MetaTrader5:
    - Open your browser and navigate to `http://localhost:3000`
-   - Login with the credentials you set in `.env`
+   - Enter the VNC password you set in `.env`
    - API documentation available at `http://localhost:8000/docs`
 
 ### Using Docker CLI
@@ -98,9 +98,11 @@ docker run -d \
   -p 3000:3000 \
   -p 8000:8000 \
   -p 8001:8001 \
-  -v mt5_config:/config \
-  -e CUSTOM_USER=trader \
-  -e PASSWORD=your_secure_password \
+  -v mt5_data:/root/.wine/drive_c/Program\ Files/MetaTrader\ 5 \
+  -e VNC_PASSWORD=yourpassword \
+  -e MT5_LOGIN=your_login \
+  -e MT5_PASSWORD=your_password \
+  -e MT5_SERVER=your_server \
   jsfrnc/mt5-docker-api:latest
 ```
 
@@ -110,21 +112,24 @@ docker run -d \
 
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
-| `CUSTOM_USER` | Yes | - | VNC username |
-| `PASSWORD` | Yes | - | VNC password (min 8 chars) |
-| `VNC_PASSWORD` | Yes | - | VNC connection password (no default; must be set explicitly) |
+| `VNC_PASSWORD` | Yes | - | VNC connection password |
+| `MT5_LOGIN` | No | - | MetaTrader5 account login |
+| `MT5_PASSWORD` | No | - | MetaTrader5 account password |
+| `MT5_SERVER` | No | - | MetaTrader5 broker server |
 | `API_KEY` | No | - | API key for authenticating REST API requests via `X-API-Key` header. If not set, auth is disabled (for local dev) |
 | `ALLOWED_ORIGINS` | No | `http://localhost:8080` | Comma-separated list of allowed CORS origins |
 | `VNC_PORT` | No | 3000 | Web VNC interface port |
 | `API_PORT` | No | 8000 | REST API server port |
 | `MT5_PORT` | No | 8001 | Python MT5 server port |
+| `WINEPREFIX` | No | `/root/.wine` | Wine prefix directory |
 | `MT5_VERSION` | No | 5.0.36 | MetaTrader5 Python library version |
 | `WINE_VERSION` | No | win10 | Wine compatibility mode |
 | `LOG_LEVEL` | No | INFO | Logging verbosity |
 
 ### Volume Mounts
 
-- `/config`: Persistent storage for MT5 data, Wine prefix, and configurations
+- `/root/.wine/drive_c/Program Files/MetaTrader 5`: MT5 installation and data (persistent across restarts)
+- `/app/logs`: Application logs
 
 ## API Usage
 
@@ -201,9 +206,9 @@ print(mt5.version())
 
 ## MQL5 Scripts Location
 
-Place your Expert Advisors and Scripts in:
+If you mount the MT5 volume locally, place your Expert Advisors and Scripts in:
 ```
-./config/.wine/drive_c/Program Files/MetaTrader 5/MQL5/
+./mt5/MQL5/
 ```
 
 Access MetaEditor through the MT5 interface for development.
