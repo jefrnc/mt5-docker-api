@@ -202,8 +202,8 @@ jobs:
       - name: Run Trivy vulnerability scanner
         run: |
           # Download and run Trivy directly
-          wget https://github.com/aquasecurity/trivy/releases/download/v0.48.0/trivy_0.48.0_Linux-64bit.tar.gz
-          tar zxvf trivy_0.48.0_Linux-64bit.tar.gz
+          wget https://github.com/aquasecurity/trivy/releases/download/v0.69.3/trivy_0.69.3_Linux-64bit.tar.gz
+          tar zxvf trivy_0.69.3_Linux-64bit.tar.gz
           
           # Build the image
           docker build -t test-scan:latest .
