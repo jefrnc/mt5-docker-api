@@ -4,7 +4,7 @@
 # Testing
 pytest==8.4.*
 pytest-cov==7.0.*
-pytest-asyncio==1.1.*
+pytest-asyncio==1.2.*
 httpx==0.28.*  # For FastAPI testing
 
 # Code quality
