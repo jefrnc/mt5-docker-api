@@ -26,8 +26,7 @@ docker-compose.test.yml
 *_test.py
 *_test.go
 
-# Scripts and tools
-scripts/
+# Scripts and tools (keep scripts/ for entrypoint)
 Metatrader/start_basic.py
 
 # Docker files (not needed in build context)
