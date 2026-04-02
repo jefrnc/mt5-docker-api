@@ -2,13 +2,15 @@
 """
 FastAPI REST API for MetaTrader5 interaction
 """
-from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, Request, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 from typing import List, Optional
 from datetime import datetime
 import asyncio
 import logging
+import os
 from contextlib import asynccontextmanager
 
 try:
@@ -80,13 +82,40 @@ app = FastAPI(
 )
 
 # CORS middleware
+_allowed_origins = os.environ.get("ALLOWED_ORIGINS", "http://localhost:8080")
+allowed_origins = [o.strip() for o in _allowed_origins.split(",") if o.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# API key authentication middleware
+API_KEY = os.environ.get("API_KEY")
+
+
+@app.middleware("http")
+async def api_key_middleware(request: Request, call_next):
+    """Verify X-API-Key header when API_KEY env var is set."""
+    # Skip auth if API_KEY is not configured (local dev)
+    if not API_KEY:
+        return await call_next(request)
+
+    # Allow health check without auth
+    if request.url.path in ("/health", "/docs", "/openapi.json", "/redoc"):
+        return await call_next(request)
+
+    provided_key = request.headers.get("X-API-Key")
+    if provided_key != API_KEY:
+        return JSONResponse(
+            status_code=401,
+            content={"detail": "Invalid or missing API key"},
+        )
+
+    return await call_next(request)
 
 
 # Pydantic models

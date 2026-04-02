@@ -18,8 +18,9 @@ services:
       - MT5_LOGIN=${MT5_LOGIN}
       - MT5_PASSWORD=${MT5_PASSWORD}
       - MT5_SERVER=${MT5_SERVER}
-      - API_KEY=${API_KEY:-your-secure-api-key}
-      - VNC_PASSWORD=${VNC_PASSWORD:-vnc123}
+      - API_KEY=${API_KEY}
+      - VNC_PASSWORD=${VNC_PASSWORD:?VNC_PASSWORD must be set}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:8080}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
