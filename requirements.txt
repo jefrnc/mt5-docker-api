@@ -8,7 +8,7 @@ urllib3==2.5.*
 # API dependencies
 fastapi==0.120.*
 uvicorn[standard]==0.35.*
-websockets==15.0.1
+websockets==16.0
 
 # MT5 dependencies
 # mt5linux==0.1.*  # Only available when running in Docker/Wine environment
