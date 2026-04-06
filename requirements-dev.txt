@@ -8,7 +8,7 @@ pytest-asyncio==1.2.*
 httpx==0.28.*  # For FastAPI testing
 
 # Code quality
-black==25.9.*
+black==26.3.*
 flake8==7.3.*
 mypy==1.18.*
 pre-commit==4.3.*
