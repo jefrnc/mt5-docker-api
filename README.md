@@ -273,3 +273,12 @@ docker build -t mt5-docker-api:latest .
 ## License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+
+---
+
+## Support this project
+
+Free, and maintained on my own time. Sponsorship covers the market data and broker API access
+behind these tools, and keeps them working when brokers change their export formats.
+
+[![Sponsor](https://img.shields.io/badge/Sponsor-jefrnc-EA4AAA?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/jefrnc)
